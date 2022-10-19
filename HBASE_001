@@ -1,0 +1,105 @@
+--------------------------------------------------- HBASE_001---------------------------------------------------------------------
+
+-- Create a table
+
+create 'cutomer','address','order'
+
+-- Inserting column name and values into the Schema
+
+put 'customer','Stephen','address:state','Maharashtra'
+put 'customer','Stephen','address:city','Mumbai'
+put 'customer','Stephen','address:street','Bandra'
+
+put 'customer','Stephen','order:number','ord_1'
+put 'customer','Stephen','address:amount','15000'
+
+
+-- Display the schema
+
+get 'customer','Stephen'
+
+
+---------------------------------------------------(HIVE__002)------------------------------------------------------------------
+
+-- General Command
+-- Table Management Command
+-- Data Manipulation Command
+-- Cluster Replication Command
+
+-- HBASE is just for practice. But in real time we use APIs (JAVA or PYTHON API)
+-- We can connect HBASE with spark or pyspark
+
+-- General Command : 1) status 2) version 3) table_help 4) whoami 
+
+-- Table Management Command : 1) create 2) list 3) describe 4) disable 5) enable 6) drop 7) alter 8) showfilter 9) disable_all 10) enable_all
+
+-- Data Manipulation Command : 1) count 2) put 3) get  4) scan (similar to select * for fetchinf the data)5) delete 6) truncate 7) truncateall
+
+-- Cluster Replication Command : 1) add_peer 2) remove_peer 3) start_replication 4) stop_replication
+ 
+-- CRUD OPERATIONS : 1) Create 2) Read (scan,get) 3) Update 4) Delete 
+
+-- API : Java and Python APIs are available
+
+
+
+-- Display the  schema using get keyword
+
+get 'customer','Stephen'   -- Here 'Stephen' is the row id.
+
+-- Display the  schema using scan keyword
+
+scan 'customer'
+
+-- The difference between scan and get keyword is that we can fetch the entire record without providind the 'row id' in the 'scan' command whereas in the 'get' command we can fetch a single record.
+
+put 'customer','Stefani','order:number','ord_002'
+
+-- Adding a new column into the existing record in a schema
+
+put 'customer','Stephen','address:email_id','stephin.sebastian@quantiphi.inc'
+
+-- To fetch a specific record from an existing record
+
+get 'customer','Stephen','address:email_id'
+
+-- Drop the table
+
+-- Step 1  : Disabl the table : diable 'customer'
+
+-- If we want to fetch the record after diabling the table then first enable the table using :  enable 'cutomer'
+
+-- for deleting it again disable and then run drop table command : drop 'customer'
+
+-- To describe the table customer : describe 'customer'
+
+-- To deleete a record
+delete 'customer','Stephen','address:email_id'
+
+-- To find the number of rows in a table
+count 'customer'
+
+-- To check if the table exists or not : exists 'customer'
+
+-- To delete a specific record : delete 'customer','Wasim','order:amount'
+
+-- To delete the column of a specific row key 
+alter 'customer','Aya','delete'=>'address:state'
+
+-- To create table with versioning
+create 'employee',{NAME=>'address'}
+
+describe 'employee'
+
+create 'employee',{NAME=>'address', VERSIONS=>3}
+
+-- Altering the table : alter 'employee_UPDATED',NAME=>'address',VERSIONS=5
+
+alter 'customer','Stephen',VERSIONS=>3
+
+put 'customer','Stephen','order:amount','35000'
+put 'customer','Stephen','order:amount','45000'
+put 'customer','Stephen','order:amount','55000'
+
+-- Navigate to : hdfs dfs -ls /hbase/data/default/customer
+
